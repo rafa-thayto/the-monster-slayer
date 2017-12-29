@@ -11,6 +11,7 @@ new Vue({
             this.gameIsRunning = true;
             this.playerHealth = 100;
             this.monsterHealth = 100;
+            this.turns: [];
         },
         attack: function() {
             let damange = this.calculateDamange(3, 10);
@@ -26,7 +27,11 @@ new Vue({
         },
         specialAttack: function() {
             let damange = this.calculateDamange(10, 20);
-            this.monsterHealth -= damange
+            this.monsterHealth -= damange;
+            this.turns.unshift({
+                isPlayer: true,
+                text: 'Player hits Monster hard for ' + damange 
+            });
             if (this.checkWin()) {
                 return;
             }
@@ -38,6 +43,10 @@ new Vue({
             } else {
                 this.playerHealth = 100;
             }
+            this.turns.unshift({
+                isPlayer: true,
+                text: 'Player heal for 10 hp'
+            });
             this.monsterAttacks();
         },
         giveUp: function() {
