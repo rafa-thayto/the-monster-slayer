@@ -11,7 +11,7 @@ new Vue({
             this.gameIsRunning = true;
             this.playerHealth = 100;
             this.monsterHealth = 100;
-            this.turns: [];
+            this.turns = [];
         },
         attack: function() {
             let damange = this.calculateDamange(3, 10);
