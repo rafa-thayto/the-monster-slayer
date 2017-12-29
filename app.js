@@ -3,7 +3,8 @@ new Vue({
     data: {
         playerHealth: 100,
         monsterHealth: 100,
-        gameIsRunning: false
+        gameIsRunning: false,
+        turns: []
     },
     methods: {
         startGame: function() {
@@ -12,15 +13,21 @@ new Vue({
             this.monsterHealth = 100;
         },
         attack: function() {
-            this.monsterHealth -= this.calculateDamange(3, 10);
+            let damange = this.calculateDamange(3, 10);
+            this.monsterHealth -= damange
+            this.turns.unshift({
+                isPlayer: true,
+                text: 'Player hits Monster for ' + damange 
+            });
             if (this.checkWin()) {
                 return;
             }
             this.monsterAttacks();
         },
         specialAttack: function() {
-            this.monsterHealth -= this.calculateDamange(10, 20);
-            if(this.checkWin()) {
+            let damange = this.calculateDamange(10, 20);
+            this.monsterHealth -= damange
+            if (this.checkWin()) {
                 return;
             }
             this.monsterAttacks();
@@ -37,7 +44,12 @@ new Vue({
             this.gameIsRunning = false;
         },
         monsterAttacks: function() {
-            this.playerHealth -= this.calculateDamange(5, 12);
+            let damange = this.calculateDamange(5, 12);
+            this.playerHealth -= damange;
+            this.turns.unshift({
+                isPlayer: false,
+                text: 'Monster hits Player for ' + damange 
+            });
             this.checkWin();
         },
         calculateDamange: function(min, max) {
@@ -52,13 +64,12 @@ new Vue({
                 }
                 return true;
             } else if (this.playerHealth <= 0) {
-                if(confirm('You lost! New Game?')) {
+                if (confirm('You lost! New Game?')) {
                     this.startGame();
                 } else {
                      this.gameIsRunning = false;
                 }
             }
-
             return false;
         }
     }
